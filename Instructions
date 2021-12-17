@@ -1,0 +1,22 @@
+git clone 
+npm install
+npm run dev
+
+Route testing with data extracted from SQLite Database:
+Homepage:
+http://localhost:3000/homepage
+
+All the people in the database:
+http://localhost:3000/api/people
+
+All the feedbacks in the database:
+http://localhost:3000/api/feedback
+
+Filtering people by ID:
+http://localhost:3000/api/person/1
+
+Filtering feedback by person:
+http://localhost:3000/api/person/1/feedbacks
+
+Filtering feedback by ID:
+http://localhost:3000/api/feedback/1
