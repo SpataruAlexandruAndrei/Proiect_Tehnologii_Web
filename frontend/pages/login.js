@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, Component } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { useRouter } from "next/router";
+import { useRouter, withRouter } from "next/router";
 
-export default function Login() {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [parola, setParola] = useState("");
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function Login() {
       email,
       parola,
     };
-    console.log(formValues);
+    //console.log(formValues);
     try {
       const response = await axios.post(
         "http://localhost:8000/api/user/login",
@@ -22,7 +22,13 @@ export default function Login() {
       );
       console.log(response);
       if (response.data && response.data.login === true) {
-        router.push("/");
+        router.push({
+          pathname: "/profile",
+          as: "/",
+          query: {
+            email: email,
+          },
+        });
       }
     } catch (err) {
       console.warn(err);
@@ -62,4 +68,6 @@ export default function Login() {
       </form>
     </div>
   );
-}
+};
+
+export default Login;

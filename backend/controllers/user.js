@@ -102,6 +102,20 @@ const controller = {
         });
       });
   },
+
+  getUserByEmail: async (req, res) => {
+    UserDB.findOne({ where: { email: req.body.email } })
+      .then((user) => {
+        res.status(200).send(user);
+      })
+      .catch((err) => res.status(500).send(err));
+  },
+
+  getAllUsers: async (req, res) => {
+    UserDB.findAll()
+      .then((users) => res.status(200).send(users))
+      .catch((err) => res.status(500).send(err));
+  },
 };
 
 module.exports = controller;
