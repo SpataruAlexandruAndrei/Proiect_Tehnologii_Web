@@ -10,7 +10,9 @@ import Link from "next/link";
 const Profile = () => {
   const router = useRouter();
   const { email } = router.query;
-  const idUser = parseInt(router.query.data);
+  const idUser = router.query.id
+    ? parseInt(router.query.id)
+    : parseInt(router.query.data);
   console.log(idUser);
   const [data, setData] = useState({
     id: "",
@@ -135,7 +137,7 @@ const Profile = () => {
             <button type="submit" className="delete-btn" onClick={handleDelete}>
               Dezactivare cont
             </button>
-            <Link href={{ pathname: "../edit/edit", query: data }}>
+            <Link href={{ pathname: "../edit/edit", query: { id: data.id } }}>
               <button type="submit" className="edit-btn">
                 Edit
               </button>

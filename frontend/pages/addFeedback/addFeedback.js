@@ -73,7 +73,10 @@ export default function AddFeedback() {
       return;
     }
 
-    if (transportMean === "") {
+    if (
+      transportMean === "" ||
+      transportMean === "Alege un mijloc de transport"
+    ) {
       toast.error("Vă rugăm să vă completați mijlocul de transport!");
       return;
     }
@@ -88,7 +91,10 @@ export default function AddFeedback() {
       return;
     }
 
-    if (congestionLevel === "") {
+    if (
+      congestionLevel === "" ||
+      congestionLevel === "Alege nivelul de aglomeratie"
+    ) {
       toast.error(
         "Vă rugăm să vă completați nivelul de aglomerare in mijlocul de transport!"
       );
@@ -102,6 +108,9 @@ export default function AddFeedback() {
 
     if (satisfactionLevel === "") {
       toast.error("Vă rugăm să vă completați nivelul de satisfactie!");
+      return;
+    } else if (satisfactionLevel > 10) {
+      toast.error("Acordati o nota de la 1 la 10!");
       return;
     }
 
@@ -125,6 +134,14 @@ export default function AddFeedback() {
       );
       if (response.data && response.data.created) {
         toast.success("Feedback-ul a fost adaugat cu succes!");
+        setStartingPoint("");
+        setFinishingPoint("");
+        setTransportMean("");
+        setDepartureTime("");
+        setDuration("");
+        setCongestionLevel("");
+        setObservations("");
+        setSatisfactionLevel("");
       }
     } catch (err) {
       console.warn(err);
@@ -169,6 +186,7 @@ export default function AddFeedback() {
               onChange={(e) => setTransportMean(e.target.value)}
               className="register-input"
             >
+              <option value="alege">Alege un mijloc de transport</option>
               <option value="autobuz">Autobuz</option>
               <option value="tramvai">Tramvai</option>
               <option value="metrou">Metrou</option>
@@ -209,6 +227,9 @@ export default function AddFeedback() {
               onChange={(e) => setCongestionLevel(e.target.value)}
               className="register-input"
             >
+              <option value="alegeAglomeratie">
+                Alege nivelul de aglomeratie
+              </option>
               <option value="mic">Mic</option>
               <option value="destul de mic">Destul de mic</option>
               <option value="moderat">Moderat</option>
@@ -241,8 +262,13 @@ export default function AddFeedback() {
             />
             <label className="register-label">Nivel de satisfactie</label>
           </div>
-
-          <input type="submit" value="Adauga feedback" className="submit-btn" />
+          <div className="loginBtns">
+            <input
+              type="submit"
+              value="Adauga feedback"
+              className="submit-btn-login"
+            />
+          </div>
         </form>
       </div>
       <ToastContainer />

@@ -9,4 +9,6 @@ userRouter.get("/getUserByID", userController.getUserByID);
 userRouter.get("/getAllUsers", userController.getAllUsers);
 userRouter.delete("/deleteUser", userController.deleteUser);
 userRouter.patch("/updateUser", userController.updateUser);
+userRouter.patch("/updatePassword", userController.updatePassword);
+
 module.exports = userRouter;

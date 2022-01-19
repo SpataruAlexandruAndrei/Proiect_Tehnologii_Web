@@ -71,7 +71,6 @@ export default function Register() {
     };
     console.log(formValues);
     try {
-      setIsLoading(true);
       const response = await axios.post(
         "http://localhost:8000/api/user/addUser",
         formValues
@@ -79,14 +78,12 @@ export default function Register() {
       if (response.data && response.data.created) {
         router.push({
           pathname: "../profile/profile",
-          // as: "/profile",
           query: {
             email: email,
           },
         });
       }
     } catch (err) {
-      setIsLoading(false);
       console.warn(err);
       toast.error(err.response.data.message);
     }
@@ -167,15 +164,13 @@ export default function Register() {
           />
           <label className="register-label">Confirmati parola</label>
         </div>
-
-        {!isLoading && (
+        <div className="loginBtns">
           <input
             type="submit"
             value="Inregistreaza-te"
-            disabled={isLoading}
-            className="submit-btn"
+            className="submit-btn-login"
           />
-        )}
+        </div>
       </form>
       <ToastContainer />
     </div>

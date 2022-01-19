@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Edit = () => {
   const router = useRouter();
-  const { email } = router.query;
+  const { id } = router.query;
   const [lastName, setLastName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [editEmail, setEmail] = useState("");
@@ -24,9 +24,9 @@ const Edit = () => {
   useEffect(() => {
     try {
       axios
-        .get("http://localhost:8000/api/user/getUserByEmail", {
+        .get("http://localhost:8000/api/user/getUserByID", {
           headers: {
-            email: email,
+            id: id,
           },
         })
         .then((res) => {
@@ -65,14 +65,14 @@ const Edit = () => {
       return;
     }
 
-    if (email === "") {
+    if (editEmail === "") {
       toast.error("Vă rugăm să vă completați email-ul!");
       return;
     }
 
     if (
       !/([a-zA-Z0-9]+)([_.-{1}])?([a-zA-Z0-9]+)@([a-zA-Z0-9]+)([.])([a-zA-Z.]+)/g.test(
-        email
+        editEmail
       )
     ) {
       toast.error("Formatul email-ului nu este valid!");
@@ -87,7 +87,7 @@ const Edit = () => {
     const formValues = {
       lastName,
       firstName,
-      email,
+      editEmail,
       phone: telefon,
     };
     console.log(formValues);
@@ -111,60 +111,68 @@ const Edit = () => {
       <div className="main">
         <div className="container">
           <h1 className="title-profile">Date Personale</h1>
-          <div className="name-container">
-            <div className="firstName">
-              <h2>Nume</h2>
-              <input
-                type="text"
-                name="nume"
-                placeholder="Nume"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-            </div>
-            <div className="lastName">
-              <h2>Prenume</h2>
-              <input
-                type="text"
-                name="prenume"
-                placeholder="Prenume"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="phone-container">
-            <h2>Numar de telefon</h2>
+          <div className="inputContainer">
             <input
               type="text"
-              name="telefon"
-              placeholder="Numar telefon"
-              value={telefon}
-              onChange={(e) => setTelefon(e.target.value)}
+              placeholder="Nume"
+              name="nume"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="register-input"
             />
-          </div>
-          <div className="email-container">
-            <h2>Email</h2>
-            <input
-              type="text"
-              name="email"
-              placeholder="Adresa de email"
-              value={editEmail}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <label className="register-label">Nume</label>
           </div>
 
-          <Link
-            as="/profile"
-            href={{ pathname: "../profile/profile", query: data }}
-          >
-            <button type="submit" className="delete-btn-edit">
-              Anulare
+          <div className="inputContainer">
+            <input
+              type="text"
+              placeholder="Prenume"
+              name="prenume"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="register-input"
+            />
+            <label className="register-label">Prenume</label>
+          </div>
+
+          <div className="inputContainer">
+            <input
+              type="text"
+              placeholder="Email"
+              name="email"
+              value={editEmail}
+              onChange={(e) => setEmail(e.target.value)}
+              className="register-input"
+            />
+            <label className="register-label">Email</label>
+          </div>
+
+          <div className="inputContainer">
+            <input
+              type="number"
+              placeholder="Numar de telefon"
+              name="telefon"
+              value={telefon}
+              onChange={(e) => setTelefon(e.target.value)}
+              className="register-input"
+            />
+            <label className="register-label">Numar de telefon</label>
+          </div>
+
+          <div className="loginBtns">
+            <Link href={{ pathname: "../profile/profile", query: { id: id } }}>
+              <button type="submit" className="submit-btn-login">
+                Anulare
+              </button>
+            </Link>
+            <button
+              type="submit"
+              className="submit-btn-login"
+              onClick={handleSave}
+            >
+              Save
             </button>
-          </Link>
-          <button type="submit" className="save-btn" onClick={handleSave}>
-            Save
-          </button>
+          </div>
         </div>
       </div>
       <ToastContainer />

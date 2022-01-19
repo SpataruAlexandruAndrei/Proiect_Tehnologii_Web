@@ -25,6 +25,7 @@ const allFeedbacks = () => {
 
   const [feedbacksData, setFeedbacksData] = useState([]);
   const [Users, setUsers] = useState([]);
+  const [mounted, setMounted] = useState(true);
 
   useEffect(() => {
     try {
@@ -80,12 +81,10 @@ const allFeedbacks = () => {
 
   let feedbackList = [];
 
-  //const user;
-
   feedbacksData.map((feedback, index) => {
-    console.log(feedback.ID_USER);
-    //
-    //  user = Users.find((user) => user.id === feedback.ID_USER);
+    const dataT = feedback.DEPARTURE_TIME.split("T");
+    const time = dataT[1].split(":00");
+
     // console.log(user);
     feedbackList.push(
       <Card
@@ -119,7 +118,7 @@ const allFeedbacks = () => {
             color="text.secondary"
             gutterBottom
           >
-            Data calatoriei: {feedback.DEPARTURE_TIME}
+            Data calatoriei: {dataT[0] + " " + time[0]}
           </Typography>
           <Typography
             sx={{ fontSize: 14, margin: "auto" }}

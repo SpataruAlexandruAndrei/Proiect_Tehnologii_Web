@@ -72,7 +72,7 @@ const yourFeedback = () => {
 
   let feedbackList = [];
 
-  const handleDelete = async (e, id) => {
+  const handleDelete = async (e, id, index) => {
     e.preventDefault();
     try {
       const response = await axios.delete(
@@ -86,10 +86,13 @@ const yourFeedback = () => {
       if (response.data) {
         // feedbacksData.find((item) => (item.id = id)).delete();
         toast.success("Feedback-ul a fost sters cu succes!");
+        const feedbacksDataNew = feedbacksData;
+        feedbacksDataNew.splice(index, 1);
+        setFeedbacksData(feedbacksDataNew);
       }
     } catch (err) {
       console.log(err);
-      toast.error(err.response.data.message);
+      toast.error(err.response.message);
     }
   };
 
@@ -121,6 +124,9 @@ const yourFeedback = () => {
   };
 
   feedbacksData.map((feedback, index) => {
+    const dataT = feedback.DEPARTURE_TIME.split("T");
+    const time = dataT[1].split(":00");
+
     feedbackList.push(
       <Card
         key={index}
@@ -153,7 +159,7 @@ const yourFeedback = () => {
             color="text.secondary"
             gutterBottom
           >
-            Data calatoriei: {feedback.DEPARTURE_TIME}
+            Data calatoriei: {dataT[0] + " " + time[0]}
           </Typography>
           <Typography
             sx={{ fontSize: 14, margin: "auto" }}
@@ -230,7 +236,7 @@ const yourFeedback = () => {
                 },
               }}
               onClick={(e) => {
-                handleDelete(e, feedback.id);
+                handleDelete(e, feedback.id, index);
               }}
             >
               Stergere feedback

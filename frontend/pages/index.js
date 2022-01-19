@@ -86,14 +86,27 @@ const Login = () => {
           />
           <label className="register-label">Introduceti parola</label>
         </div>
-        <button type="submit" onClick={handleSubmit} className="submit-btn">
-          Login
-        </button>
-        <Link href="./register/register" as="/register">
-          <button type="submit" className="submit-btn">
-            Creare cont
+        <div className="loginBtns">
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            className="submit-btn-login"
+          >
+            Login
           </button>
-        </Link>
+          <Link href="./register/register" as="/register">
+            <button type="submit" className="submit-btn-login">
+              Creare cont
+            </button>
+          </Link>
+        </div>
+        <div className="loginBtns">
+          <Link href="./resetPassword/resetPassword" as="/resetPassword">
+            <button type="submit" className="submit-btn-reset">
+              Ai uitat parola? Apasa aici
+            </button>
+          </Link>
+        </div>
       </form>
       <ToastContainer />
     </div>

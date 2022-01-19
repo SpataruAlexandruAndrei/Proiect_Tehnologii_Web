@@ -91,7 +91,7 @@ const controller = {
             });
           } else {
             res.status(401).send({
-              message: "Parola gresita!2",
+              message: "Parola gresita!",
             });
           }
         }
@@ -104,16 +104,16 @@ const controller = {
   },
 
   updateUser: async (req, res) => {
-    if (req.body.email) {
+    if (req.body.editEmail) {
       const user = await UserDB.findOne({
-        where: { email: req.body.email },
+        where: { email: req.body.editEmail },
       });
       if (user) {
         if (
           user.firstName === req.body.firstName &&
           user.lastName === req.body.lastName &&
           user.phone === req.body.phone &&
-          user.email === req.body.email
+          user.email === req.body.editEmail
         ) {
           res.status(403).send({ message: "Datele sunt deja salvate!" });
         } else {
@@ -121,7 +121,7 @@ const controller = {
             user.firstName = req.body.firstName;
             user.lastName = req.body.lastName;
             user.phone = req.body.phone;
-            user.email = req.body.email;
+            user.email = req.body.editEmail;
             await user.save();
             res.status(200).send({
               message: "Datele au fost salvate cu succes!",
@@ -134,6 +134,30 @@ const controller = {
       }
     } else {
       res.status(500).send({ message: "ceva nu merge bine!!!!" });
+    }
+  },
+
+  updatePassword: async (req, res) => {
+    if (req.body.email) {
+      const user = await UserDB.findOne({
+        where: { email: req.body.email },
+      });
+      if (user) {
+        if (user.password === req.body.password) {
+          res.status(403).send({ message: "exista deja aceasta parola!" });
+        } else {
+          user.password = req.body.password;
+          await user.save();
+          res.status(200).send({
+            message: "Parola a fost schimbata cu succes!",
+            user: user,
+          });
+        }
+      } else {
+        res.status(403).send({ message: "Nu exista user cu acest email!" });
+      }
+    } else {
+      res.status(403).send({ message: "ceva nu exista mail!" });
     }
   },
 

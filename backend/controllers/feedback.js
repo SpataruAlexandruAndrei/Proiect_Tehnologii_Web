@@ -135,27 +135,48 @@ const controller = {
   },
 
   update: async (req, res) => {
-    const id = req.params.id;
-
-    FeedbackDB.update(req.body, {
-      where: { id: id },
-    })
-      .then((num) => {
-        if (num == 1) {
-          res.send({
-            message: "Feedback was updated successfully.",
+    if (req.body.id) {
+      const feedback = await FeedbackDB.findOne({
+        where: { id: req.body.id },
+      });
+      if (feedback) {
+        if (
+          feedback.STARTING_POINT === req.body.STARTING_POINT &&
+          feedback.FINISHING_POINT === req.body.FINISHING_POINT &&
+          feedback.TRANSPORT_MEAN === req.body.TRANSPORT_MEAN &&
+          feedback.DURATION === req.body.DURATION &&
+          feedback.CONGESTION_LEVEL === req.body.CONGESTION_LEVEL &&
+          feedback.OBSERVATIONS === req.body.OBSERVATIONS &&
+          feedback.SATISFACTION_LEVEL === req.body.SATISFACTION_LEVEL
+        ) {
+          res.status(403).send({
+            message: "Feedback-ul contine deja aceste date!",
+            feedback: feedback,
           });
         } else {
-          res.send({
-            message: `Cannot update Feedback with id=${id}. Maybe Feedback was not found or req.body is empty!`,
-          });
+          try {
+            feedback.STARTING_POINT = req.body.STARTING_POINT;
+            feedback.FINISHING_POINT = req.body.FINISHING_POINT;
+            feedback.TRANSPORT_MEAN = req.body.TRANSPORT_MEAN;
+            feedback.DURATION = req.body.DURATION;
+            feedback.CONGESTION_LEVEL = req.body.CONGESTION_LEVEL;
+            feedback.OBSERVATIONS = req.body.OBSERVATIONS;
+            feedback.SATISFACTION_LEVEL = req.body.SATISFACTION_LEVEL;
+            await feedback.save();
+            res.status(200).send({
+              message: "Feedback-ul a fost modificat cu succes!",
+              feedback: feedback,
+            });
+          } catch {
+            res.status(500).send({ message: "Server error" });
+          }
         }
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message: "Error updating Feedback with id=" + id,
-        });
-      });
+      } else {
+        res.status(500).send({ message: "pola feedback" });
+      }
+    } else {
+      res.status(500).send({ message: "pola id" });
+    }
   },
   // delete: async (req, res) => {
   //   const id = req.params.id;
