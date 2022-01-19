@@ -79,6 +79,16 @@ const allFeedbacks = () => {
   //   console.log(feedbacksData);
   // console.log(Users);
 
+  Users.forEach((user) => {
+    feedbacksData.forEach((feedback) => {
+      console.log(feedback);
+      if (user.id === feedback.ID_USER) {
+        feedback["firstName"] = user.firstName;
+        feedback["lastName"] = user.lastName;
+      }
+    });
+  });
+
   let feedbackList = [];
 
   feedbacksData.map((feedback, index) => {
@@ -97,7 +107,7 @@ const allFeedbacks = () => {
             color="text.secondary"
             gutterBottom
           >
-            Nume: {data.lastName + " " + data.firstName}
+            Nume: {feedback.lastName + " " + feedback.firstName}
           </Typography>
           <Typography
             sx={{ fontSize: 14, margin: "auto" }}
